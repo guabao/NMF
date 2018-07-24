@@ -30,13 +30,15 @@ def mulUpdateFrobenius(M, p, tol=1e-4, maxiter=1000):
     status = 'Not Converge'
     
     while tol_cur > tol:
+        T = numpy.dot(V, H)
         H = H * (numpy.dot(V.T, M)) / (numpy.dot(numpy.dot(V.T, V), H))
         V = V * (numpy.dot(M, H.T)) / (numpy.dot(numpy.dot(V, H), H.T))
         it += 1
         if it > maxiter:
             break
+        tol_cur = numpy.linalg.norm(T - numpy.dot(V, H)) / numpy.linalg.norm(T)
     if not tol_cur > tol:
-        status = 'Coverge'
+        status = 'Converge'
     return {'status':status, 'V':V, 'H':H}
 
 
@@ -59,7 +61,6 @@ def mulUpdateKLD(M, p, tol=1e-4, maxiter=1000):
     V_{x, y} = V_{x, y} * (M * H^{T})_{x, y} / (V * H * H^{T})_{x, y}
     '''
 
-    raise "under construction!"
     tol_cur = 1e8
     m, n = M.shape
     V = numpy.random.rand(m, p)
@@ -68,5 +69,13 @@ def mulUpdateKLD(M, p, tol=1e-4, maxiter=1000):
     status = 'Not Converge'
     
     while tol_cur > tol:
-        pass
-    return None
+        T = numpy.dot(V, H)
+        H = H * numpy.dot((V / numpy.sum(V, aixs=0)).T, V / T)
+        V = V * numpy.dot(V / T, H.T) / numpy.sum(H, axis=0)
+        it += 1
+        if it > maxiter:
+            break
+        tol_cur = numpy.linalg.norm(T - numpy.dot(V, H)) / numpy.linalg.norm(T)
+    if not tol_cur > tol:
+        status = 'Converge'
+    return {'status':status, 'V':V, 'H': H}
