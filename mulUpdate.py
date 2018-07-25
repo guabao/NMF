@@ -79,3 +79,12 @@ def mulUpdateKLD(M, p, tol=1e-4, maxiter=1000):
     if not tol_cur > tol:
         status = 'Converge'
     return {'status':status, 'V':V, 'H': H}
+
+
+
+def testMx():
+    n = 10
+    p = 2
+    mx = numpy.round(numpy.random.rand(n, n), 2)
+    d = mulUpdateFrobenius(mx, p)
+    return mx, d
