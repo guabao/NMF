@@ -82,7 +82,7 @@ def foo(M, p, tol=1e-4, maxiter=1000):
             for fk in range(p):
                 for hi in range(p):
                     for hk in range(m):
-                        J_fh[fi*p+fk, hi*m+hk] = numpy.sum(V[fi, :] * H[:, hk]) + V[fi, hi] * H[hi, hk] + M[fi, hk] if hi == fk else V[fi, hi] * H[fk, hk]
+                        J_fh[fi*p+fk, hi*m+hk] = numpy.sum(V[fi, :] * H[:, hk]) + V[fi, hk] * H[hi, hk] + M[fi, hk] if hi == fk else V[fi, hi] * H[fk, hk]
 
     def dgdv():
         for gi in range(p):
